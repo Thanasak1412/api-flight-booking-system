@@ -1,0 +1,23 @@
+# local env files
+# Ignore all .env files
+.env*
+# Explicitly include .env.example
+!.env.example
+
+# dependencies
+/node_modules
+
+# production
+/dist
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+_static
