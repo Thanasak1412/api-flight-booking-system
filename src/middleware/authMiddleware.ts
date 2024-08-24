@@ -14,6 +14,10 @@ const protectRoutes = async (
 ) => {
   let token: string | null = null;
 
+  if (res.headersSent || req.originalUrl.includes('auth')) {
+    return next();
+  }
+
   // Check for token is headers
   if (req.headers.authorization?.startsWith('Bearer')) {
     try {
@@ -35,7 +39,9 @@ const protectRoutes = async (
         status: err.status,
       });
 
-      const error = new Error('Not authorized, token failed') as HttpError;
+      const error = new Error(
+        err.message ?? 'Not authorized, token failed'
+      ) as HttpError;
 
       error.status = 401;
 
