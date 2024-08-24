@@ -1,14 +1,15 @@
 import https from 'https';
-import express, { NextFunction, type Request, type Response } from 'express';
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 
 import { certOptions, helmetOptions, limiter } from './config/appConfig';
-import { logger, errorLogger } from './config/logger';
+import { logger } from './config/logger';
 import { API_PORT, BASE_API } from './config/env';
 import router from './routes';
 import userRouter from './routes/userRoutes';
+import { catchErrors } from './middleware/errorMiddleware';
 import { protectRoutes } from './middleware/authMiddleware';
 
 const app = express();
@@ -16,6 +17,7 @@ const app = express();
 app.use(helmet(helmetOptions));
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(limiter);
 
 app.use(
@@ -39,21 +41,7 @@ app.use(protectRoutes);
 app.use(BASE_API, router);
 
 // Middleware for catching errors
-app.use((err: any, req: Request, res: Response, _next: NextFunction) => {
-  const statusCode = err.status || 500;
-
-  // Log error details securely
-  errorLogger.error({
-    message: err.message,
-    stack: err.stack,
-    status: err.status || 500,
-    url: req.originalUrl,
-  });
-
-  res.status(err.status || 500).json({
-    message: statusCode === 500 ? 'Internal Server Error' : err.message,
-  });
-});
+app.use(catchErrors);
 
 app.get('*', (_req, res) => {
   res.status(404).json('Not found');
