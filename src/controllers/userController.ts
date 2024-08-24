@@ -23,8 +23,14 @@ const register = async (req: Request, res: Response, next: NextFunction) => {
     });
 
     res.status(201).json({ token });
-  } catch (error) {
-    next(error);
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return res.status(400).json({
+        message: 'Email already exists',
+      });
+    }
+
+    return next(error);
   }
 };
 
@@ -45,7 +51,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
     res.status(200).json({ token });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 

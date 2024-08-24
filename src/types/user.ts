@@ -10,5 +10,10 @@ export type IUser = {
 
 // Put all user instance methods in this interface
 export interface IUserMethods {
-  comparePassword(inputPassword: string): string;
+  comparePassword(inputPassword: string): Promise<boolean>;
+}
+
+export enum UserRoles {
+  ADMIN = 'admin',
+  CUSTOMER = 'customer',
 }
