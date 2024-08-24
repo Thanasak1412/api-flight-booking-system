@@ -1,4 +1,4 @@
-import mongoose from '../utils/db'
+import mongoose from '../utils/db';
 
 const PaymentSchema = new mongoose.Schema({
   booking: {
@@ -16,7 +16,8 @@ const PaymentSchema = new mongoose.Schema({
   },
   paymentStatus: {
     type: String,
-    enum: ['successful', 'failed', 'pending'],
+    enum: ['succeeded', 'failed', 'pending'],
+    default: 'pending',
     required: true,
   },
   paymentDate: {

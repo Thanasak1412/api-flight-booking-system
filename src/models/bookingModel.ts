@@ -1,4 +1,4 @@
-import mongoose from '../utils/db'
+import mongoose from '../utils/db';
 
 const bookingSchema = new mongoose.Schema({
   user: {
@@ -11,7 +11,7 @@ const bookingSchema = new mongoose.Schema({
     ref: 'Flight',
     required: true,
   },
-  passenger: [
+  passengers: [
     {
       fullName: {
         type: String,
@@ -26,11 +26,6 @@ const bookingSchema = new mongoose.Schema({
       },
     },
   ],
-  paymentStatus: {
-    type: String,
-    enum: ['pending', 'completed', 'failed'],
-    default: 'pending',
-  },
   bookingDate: {
     type: Date,
     default: Date.now,
