@@ -58,7 +58,6 @@ const createBooking = async (
       success: true,
       message: 'Payment successful',
       data: {
-        charge,
         payment,
       },
     });
